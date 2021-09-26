@@ -1,8 +1,11 @@
-import Task, { TaskProps } from "./Task";
-
+import Task from "./Task";
+import type { Task as ITask } from "../types/task";
+import { connect } from "react-redux";
+import { archiveTask, pinTask, TaskState, TaskAction } from "../lib/redux";
+import type { Dispatch } from "react";
 export interface TaskListProps {
   loading?: boolean;
-  tasks: TaskProps[];
+  tasks: ITask[];
   onPinTask: (id: string | number) => void;
   onArchiveTask: (id: string | number) => void;
 }
@@ -61,4 +64,14 @@ export function TaskList({
   );
 }
 
-export default TaskList;
+export default connect(
+  ({ tasks }: TaskState): TaskState => ({
+    tasks: tasks.filter(
+      (t) => t.state === "TASK_INBOX" || t.state === "TASK_PINNED"
+    ),
+  }),
+  (dispatch: Dispatch<TaskAction>) => ({
+    onArchiveTask: (id: string | number) => dispatch(archiveTask(id)),
+    onPinTask: (id: string | number) => dispatch(pinTask(id)),
+  })
+)(TaskList);

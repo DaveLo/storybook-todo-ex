@@ -1,5 +1,5 @@
+// @ts-nocheck
 import { Story, Meta } from "@storybook/react";
-import type { Task as ITask } from "../types/task";
 import { TaskList, TaskListProps } from "./TaskList";
 import * as TaskStories from "./Task.stories";
 
